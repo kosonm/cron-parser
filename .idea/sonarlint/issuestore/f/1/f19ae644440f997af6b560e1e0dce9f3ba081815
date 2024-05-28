@@ -1,0 +1,15 @@
+
+V
+java:S1118":Add a private constructor to hide the implicit public one.(ŒÅüg8ù…Û÷û1
+L	java:S106$"+Replace this use of System.out by a logger.(¯À¤›úÿÿÿÿ8ü…Û÷û1
+L	java:S1068"+Replace this use of System.out by a logger.(ôÝÿÞúÿÿÿÿ8þ…Û÷û1
+G	java:S106C"+Replace this use of System.out by a logger.(ÞÈ‘¼8ÿ…Û÷û1
+G	java:S106G"+Replace this use of System.out by a logger.(þ¬ä€8ÿ…Û÷û1
+G	java:S106K"+Replace this use of System.out by a logger.(»ï½Å8õƒß÷û1
+@
+java:S1128"$Remove this unused import 'java.io'.(¬›ãD8Ù¼ß÷û1
+Y
+java:S1128"7Remove this unused import 'java.util.stream.IntStream'.(ÙÉ½Ÿùÿÿÿÿ8Ù¼ß÷û1
+\
+java:S1128
+"?Remove this unused import 'java.util.stream.Collectors.toList'.(ã‚ºÎ8Ù¼ß÷û1
