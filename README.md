@@ -59,7 +59,7 @@ The complete cron expression `*/15 0 1,15 * 1-5` specifies that the command runs
 
 1. **Navigate to the project directory**:
     ```sh
-    cd /path/to/project
+    cd /path/to/project/src/main/java/pl
     ```
 
 2. **Compile the Java files**:
