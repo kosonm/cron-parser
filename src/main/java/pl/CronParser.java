@@ -46,11 +46,11 @@ public class CronParser {
         System.out.printf(OUTPUT_FORMAT, "command", command);
     }
 
-    private static String expandField(String field, CronFieldType fieldType) {
+    public static String expandField(String field, CronFieldType fieldType) {
         if (field.equals("*")) {
             return rangeToString(fieldType.min, fieldType.max);
         } else if (field.contains("/")) {
-            return expandStep(field, fieldType.min, fieldType.max);
+            return expandStep(field, fieldType);
         } else if (field.contains(",")) {
             return expandList(field, fieldType.names);
         } else if (field.contains("-")) {
@@ -92,34 +92,34 @@ public class CronParser {
         return result;
     }
 
-    private static String expandStep(String field, int min, int max) {
+    private static String expandStep(String field, CronFieldType fieldType) {
         String[] parts = field.split("/");
         int step = Integer.parseInt(parts[1]);
         if (step <= 0) {
             throw new IllegalArgumentException("Step value must be greater than 0: " + field);
         }
 
-        List<Integer> result = new ArrayList<>();
-        if (parts[0].equals("*")) {
-            for (int i = min; i <= max; i += step) {
-                result.add(i);
-            }
-        } else {
+        int start = fieldType.min;
+        int end = fieldType.max;
+
+        if (!parts[0].equals("*")) {
             String[] rangeParts = parts[0].split("-");
-            int rangeMin = Integer.parseInt(rangeParts[0]);
-            int rangeMax = Integer.parseInt(rangeParts[1]);
-            if (rangeMin > rangeMax) {
+            start = Integer.parseInt(rangeParts[0]);
+            end = Integer.parseInt(rangeParts[1]);
+            if (start > end) {
                 throw new IllegalArgumentException("Invalid range: " + field);
             }
-            for (int i = rangeMin; i <= rangeMax; i += step) {
-                result.add(i);
-            }
         }
+
+        List<Integer> result = new ArrayList<>();
+        for (int i = start; i <= end; i += step) {
+            result.add(i);
+        }
+
         return result.stream().map(String::valueOf).collect(Collectors.joining(" "));
     }
 
     private static String expandList(String field, List<String> names) {
-        // Validate and convert comma-separated list to space-separated string
         return Arrays.stream(field.split(","))
                 .map(value -> names != null && names.contains(value.toUpperCase(Locale.getDefault())) ?
                         String.valueOf(names.indexOf(value.toUpperCase(Locale.getDefault())) + 1) : value)
@@ -136,11 +136,11 @@ public class CronParser {
         if (start > end) {
             throw new IllegalArgumentException("Invalid range: " + field);
         }
-        // Convert range to space-separated string
+
         return range(start, end).stream().map(String::valueOf).collect(Collectors.joining(" "));
     }
 
-    enum CronFieldType {
+    public enum CronFieldType {
         MINUTE(0, 59, null),
         HOUR(0, 23, null),
         DAY_OF_MONTH(1, 31, null),
